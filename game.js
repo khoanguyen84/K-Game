@@ -113,6 +113,7 @@ function play(i, j) {
         select++;
     }
     else {
+        document.getElementById(`td_${i}_${j}`).classList.add('selected');
         process.push(new Position(i, j, game_matrix[i][j]));
         if (isCorrect()) {
             select = 1;
