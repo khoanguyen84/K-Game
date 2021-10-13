@@ -106,14 +106,12 @@ function hasNoValue(row, col) {
     return game_matrix[row][col] == 0;
 }
 function play(i, j) {
-
+    document.getElementById(`td_${i}_${j}`).classList.add('selected');
     if (select == 1) {
-        document.getElementById(`td_${i}_${j}`).classList.add('selected');
         process.push(new Position(i, j, game_matrix[i][j]));
         select++;
     }
     else {
-        document.getElementById(`td_${i}_${j}`).classList.add('selected');
         process.push(new Position(i, j, game_matrix[i][j]));
         if (isCorrect()) {
             select = 1;
