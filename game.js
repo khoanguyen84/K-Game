@@ -56,7 +56,6 @@ function initGame() {
 }
 
 function buildGame() {
-    initGame();
     let row = 0;
     let col = 0;
     let count = 0;
@@ -107,6 +106,7 @@ function hasNoValue(row, col) {
     return game_matrix[row][col] == 0;
 }
 function play(i, j) {
+
     if (select == 1) {
         document.getElementById(`td_${i}_${j}`).classList.add('selected');
         process.push(new Position(i, j, game_matrix[i][j]));
@@ -128,7 +128,12 @@ function play(i, j) {
             message = 'not match!';
         }
         showMessage(message);
+        autoCloseMessage();
     }
+    if (isComplete()) {
+        showMessage('Congratulation!');
+    }
+
 }
 
 function isCorrect() {
@@ -150,13 +155,24 @@ function isCorrect() {
 function showMessage(msg) {
     document.getElementById('message').classList.remove('d-none');
     document.getElementById('message').innerText = msg;
-    autoCloseMessage();
 }
 
 function autoCloseMessage() {
     setTimeout(() => {
         document.getElementById('message').classList.add('d-none');
-    }, 1*1000);
+    }, 1 * 1000);
+}
+
+function isComplete() {
+    let complete = true;
+    game_matrix.forEach(function (arr, index) {
+        arr.forEach(function (value, index) {
+            if (value != 0) {
+                complete = false;
+            }
+        })
+    });
+    return complete;
 }
 
 function main() {
@@ -166,4 +182,9 @@ function main() {
     buildGame();
     drawGame();
 }
-main();
+
+function start() {
+    document.getElementsByClassName('start-game')[0].classList.add('d-none');
+    initGame();
+    main();
+}
