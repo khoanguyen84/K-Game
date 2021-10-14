@@ -7,11 +7,13 @@ let number_min = 1;
 let number_max = 9;
 let oparator_min = 1;
 let oparator_max = 2;
-let size = 8;
+let size = 4;
 let aHalf = size * size / 2;
 let game_matrix = [];
 let select = 1;
 let process = [];
+let totalTime = '0:0:0:0';
+let intervalId;
 var message = '';
 
 class Position {
@@ -106,14 +108,15 @@ function hasNoValue(row, col) {
     return game_matrix[row][col] == 0;
 }
 function play(i, j) {
-    document.getElementById(`td_${i}_${j}`).classList.add('selected');
     if (select == 1) {
+        document.getElementById(`td_${i}_${j}`).classList.add('selected');
         process.push(new Position(i, j, game_matrix[i][j]));
         select++;
     }
     else {
         process.push(new Position(i, j, game_matrix[i][j]));
         if (isCorrect()) {
+            document.getElementById(`td_${i}_${j}`).classList.add('selected');
             select = 1;
             let pos1 = process[0];
             let pos2 = process[1];
@@ -130,14 +133,14 @@ function play(i, j) {
         autoCloseMessage();
     }
     if (isComplete()) {
-        showMessage('Congratulation!');
+        clearInterval(intervalId);
+        showMessage(`Congratulation`, true);
     }
-
 }
 
 function isCorrect() {
-    let statement;
-    let result;
+    let statement='';
+    let result=0;
     if (Number.isInteger(process[0].value)) {
         statement = process[1].value;
         result = process[0].value;
@@ -151,9 +154,15 @@ function isCorrect() {
     return eval(statement) == result;
 }
 
-function showMessage(msg) {
-    document.getElementById('message').classList.remove('d-none');
-    document.getElementById('message').innerText = msg;
+function showMessage(msg, isDone = false) {
+    let message = document.getElementById('message');
+    message.classList.remove('d-none');
+    message.children[0].innerHTML = msg;
+    if (isDone) {
+        message.children[1].classList.remove('d-none');
+        message.children[2].classList.remove('d-none');
+        message.children[1].innerHTML = totalTime;
+    }
 }
 
 function autoCloseMessage() {
@@ -163,27 +172,69 @@ function autoCloseMessage() {
 }
 
 function isComplete() {
-    let complete = true;
-    game_matrix.forEach(function (arr, index) {
-        arr.forEach(function (value, index) {
-            if (value != 0) {
-                complete = false;
-            }
-        })
-    });
-    return complete;
+    // let complete = true;
+    // game_matrix.forEach(function (arr, index) {
+    //     arr.forEach(function (value, index) {
+    //         if (value != 0) {
+    //             complete = false;
+    //         }
+    //     })
+    // });
+    // return complete;
+    for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+            if (game_matrix[i][j] != 0)
+                return false;
+        }
+    }
+    return true;
 }
 
-function main() {
+function time() {
+    let count = 0;
+    let hour = 0;
+    let minute = 0;
+    let second = 0;
+    let intervalId = setInterval(() => {
+        count++;
+        if (count == 1000) {
+            count = 0;
+            second += 1;
+            if (second == 60) {
+                second = 0;
+                minute += 1;
+            }
+            if (minute == 6) {
+                minute = 0;
+                hour += 1;
+            }
+        }
+        totalTime = `${hour}:${minute}:${second}:${count}`;
+        document.getElementById('clock').innerHTML = totalTime;
+    }, 1);
+    return intervalId;
+}
+
+function reset() {
+    let message = document.getElementById('message');
+    message.children[1].classList.add('d-none');
+    message.children[2].classList.add('d-none');
+    message.classList.add('d-none');
+    document.getElementsByClassName('start-game')[0].classList.add('d-none');
+    select = 1;
+    process = [];
+}
+function run() {
+    reset();
     for (let i = 0; i < aHalf; i++) {
         ramdonOperand();
     }
     buildGame();
     drawGame();
+    intervalId = time();
 }
 
 function start() {
-    document.getElementsByClassName('start-game')[0].classList.add('d-none');
     initGame();
-    main();
+    run();
 }

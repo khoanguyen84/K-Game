@@ -23,20 +23,29 @@
     outline:none;
     padding: 10px 20px;
     border-radius: 5px;
-    position: relative;
-    top:50%;
-    left: 50%;
     cursor: pointer;
 }
 
 .btn-success{
     background-color: tomato;
     color: white;
+    position: relative;
+    top:50%;
+    left: 50%;
 }
 
 .btn-success:hover{
     background-color: coral;
     color: white;
+}
+
+.btn-danger{
+    background-color: tomato;
+    color: white;
+}
+
+.btn-danger:hover{
+    background-color: salmon;
 }
 
 table, tr, td{
@@ -79,9 +88,18 @@ td:hover{
     top:-250px;
     left: 0;
     text-align: center;
+    z-index: 1000;
 }
 .d-none{
     display: none;
+}
+
+#clock{
+    background-color: tomato;
+    display: block;
+    text-align: center;
+    color: white;
+    padding: 5px 0px;
 }
 
 @media (max-width:600px) {

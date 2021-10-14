@@ -11,8 +11,13 @@
     <div class="container">
         <div class="row">
             <div class="game-area">
+                <span id="clock"></span>
                 <table id="tbData"></table>
-                <div id="message" class="d-none"></div>
+                <div id="message" class="d-none">
+                    <p></p>
+                    <p style="background-color: green;" class="d-none"></p>
+                    <button class="btn btn-danger d-none" onclick="start()">Play again</button>
+                </div>
             </div>
             <div class="start-game">
                 <button class="btn btn-success" onclick="start()">Start</button>
