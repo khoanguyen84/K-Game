@@ -116,6 +116,7 @@ function play(i, j) {
     else {
         process.push(new Position(i, j, game_matrix[i][j]));
         if (isCorrect()) {
+            isNotMath = 0;
             document.getElementById(`td_${i}_${j}`).classList.add('selected');
             select = 1;
             let pos1 = process[0];
@@ -150,7 +151,7 @@ function isCorrect() {
         result = process[1].value;
     }
     message = `${statement}=${result}`;
-    statement = statement.replace('x', '*');
+    statement = Number.isInteger(statement) ? statement : statement.replace('x', '*');
     return eval(statement) == result;
 }
 
